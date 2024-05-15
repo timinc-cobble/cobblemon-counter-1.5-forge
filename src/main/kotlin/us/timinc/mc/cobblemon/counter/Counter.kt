@@ -27,7 +27,7 @@ import us.timinc.mc.cobblemon.counter.store.CaptureCount
 import us.timinc.mc.cobblemon.counter.store.CaptureStreak
 import us.timinc.mc.cobblemon.counter.store.KoCount
 import us.timinc.mc.cobblemon.counter.store.KoStreak
-import us.timinc.mc.config.ConfigBuilder
+import us.timinc.mc.cobblemon.counter.config.ConfigBuilder
 import java.util.*
 
 @Mod(Counter.MOD_ID)
