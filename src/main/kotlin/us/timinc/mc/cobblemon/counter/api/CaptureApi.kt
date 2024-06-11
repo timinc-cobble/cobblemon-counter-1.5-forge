@@ -10,7 +10,7 @@ import us.timinc.mc.cobblemon.counter.store.CaptureCount
 import us.timinc.mc.cobblemon.counter.store.CaptureStreak
 
 object CaptureApi {
-    fun add(player: ServerPlayer, species: String) {
+    fun add(player: ServerPlayer, species: String, preserveStreak: Boolean = false) {
         val data = Cobblemon.playerData.get(player)
 
         val captureCount: CaptureCount = data.extraData.getOrPut(CaptureCount.NAME) { CaptureCount() } as CaptureCount
@@ -18,7 +18,9 @@ object CaptureApi {
             data.extraData.getOrPut(CaptureStreak.NAME) { CaptureStreak() } as CaptureStreak
 
         captureCount.add(species)
-        captureStreak.add(species)
+        if (!preserveStreak) {
+            captureStreak.add(species)
+        }
 
         val newCount = captureCount.get(species)
         val newStreak = captureStreak.get(species)
