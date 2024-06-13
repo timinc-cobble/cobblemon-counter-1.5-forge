@@ -16,28 +16,16 @@ object UseEntity {
         if (entity !is PokemonEntity) {
             return InteractionResult.PASS
         }
-        if (!entity.pokemon.isWild()) {
+        if (!entity.pokemon.isWild() || world.isClientSide) {
             return InteractionResult.PASS
         }
         if (!player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty) {
             return InteractionResult.PASS
         }
-        if (!world.isClientSide) {
-            val species = entity.pokemon.species.name.lowercase()
-            val alreadyEncountered = EncounterApi.check(player, species)
-            if (alreadyEncountered) {
-                if (config.broadcastEncountersToPlayer) {
-                    val alreadyCaught = CaptureApi.getCount(player, species) > 0
-                    player.sendSystemMessage(
-                        Component.translatable(
-                            if (alreadyCaught) "counter.encounter.alreadyCaught" else "counter.encounter.alreadyEncountered",
-                            species
-                        )
-                    )
-                }
-            } else {
-                EncounterApi.add(player, species)
-            }
+        val species = entity.pokemon.species.name.lowercase()
+        val alreadyEncountered = EncounterApi.check(player, species)
+        if (!alreadyEncountered) {
+            EncounterApi.add(player, species)
         }
         return InteractionResult.SUCCESS
     }
