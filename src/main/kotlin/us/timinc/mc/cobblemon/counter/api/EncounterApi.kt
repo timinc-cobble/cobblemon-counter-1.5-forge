@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player
 import us.timinc.mc.cobblemon.counter.Counter.config
 import us.timinc.mc.cobblemon.counter.Counter.info
 import us.timinc.mc.cobblemon.counter.store.Encounter
+import us.timinc.mc.cobblemon.counter.util.Util
 
 object EncounterApi {
     fun add(player: Player, species: String) {
@@ -22,7 +23,7 @@ object EncounterApi {
 
         info("Player ${player.displayName.string} encountered a $species")
         if (config.broadcastEncountersToPlayer) {
-            player.sendSystemMessage(Component.translatable("counter.encounter.confirm", species))
+            player.sendSystemMessage(Component.translatable("counter.encounter.confirm", Component.translatable("cobblemon.species.${Util.cleanSpeciesNameForTranslation(species)}.name")))
         }
     }
 

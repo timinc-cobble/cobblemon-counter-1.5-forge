@@ -8,6 +8,7 @@ import us.timinc.mc.cobblemon.counter.Counter.config
 import us.timinc.mc.cobblemon.counter.Counter.info
 import us.timinc.mc.cobblemon.counter.store.KoCount
 import us.timinc.mc.cobblemon.counter.store.KoStreak
+import us.timinc.mc.cobblemon.counter.util.Util
 
 object KoApi {
     fun add(player: ServerPlayer, species: String) {
@@ -27,7 +28,7 @@ object KoApi {
         if (config.broadcastKosToPlayer) {
             player.sendSystemMessage(
                 Component.translatable(
-                    "counter.ko.confirm", species, newCount, newStreak
+                    "counter.ko.confirm", Component.translatable("cobblemon.species.${Util.cleanSpeciesNameForTranslation(species)}.name"), newCount, newStreak
                 )
             )
         }

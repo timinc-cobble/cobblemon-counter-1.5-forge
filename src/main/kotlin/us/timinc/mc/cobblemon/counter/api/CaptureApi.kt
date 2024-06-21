@@ -8,6 +8,7 @@ import us.timinc.mc.cobblemon.counter.Counter.config
 import us.timinc.mc.cobblemon.counter.Counter.info
 import us.timinc.mc.cobblemon.counter.store.CaptureCount
 import us.timinc.mc.cobblemon.counter.store.CaptureStreak
+import us.timinc.mc.cobblemon.counter.util.Util
 
 object CaptureApi {
     fun add(player: ServerPlayer, species: String, preserveStreak: Boolean = false) {
@@ -31,7 +32,7 @@ object CaptureApi {
         if (config.broadcastCapturesToPlayer) {
             player.sendSystemMessage(
                 Component.translatable(
-                    "counter.capture.confirm", species, newCount, newStreak
+                    "counter.capture.confirm", Component.translatable("cobblemon.species.${Util.cleanSpeciesNameForTranslation(species)}.name"), newCount, newStreak
                 )
             )
         }
