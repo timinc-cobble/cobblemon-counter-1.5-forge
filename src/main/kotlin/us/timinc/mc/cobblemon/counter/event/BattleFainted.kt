@@ -12,7 +12,7 @@ object BattleFainted {
         if (!targetPokemon.isWild()) {
             return
         }
-        val species = targetPokemon.species.name.lowercase()
+        val species = targetPokemon.species
 
         event.battle.playerUUIDs.mapNotNull(UUID::getPlayer).forEach { player ->
             KoApi.add(player, species)

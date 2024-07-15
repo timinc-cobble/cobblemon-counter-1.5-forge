@@ -1,16 +1,27 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package us.timinc.mc.cobblemon.counter.api
 
 import com.cobblemon.mod.common.Cobblemon
+import com.cobblemon.mod.common.pokemon.Species
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Player
 import us.timinc.mc.cobblemon.counter.Counter.config
 import us.timinc.mc.cobblemon.counter.Counter.info
 import us.timinc.mc.cobblemon.counter.store.KoCount
 import us.timinc.mc.cobblemon.counter.store.KoStreak
-import us.timinc.mc.cobblemon.counter.util.Util
 
 object KoApi {
+    fun add(player: ServerPlayer, species: Species) {
+        add(player, species.resourceIdentifier)
+    }
+
+    fun add(player: ServerPlayer, species: ResourceLocation) {
+        add(player, species.path)
+    }
+
     fun add(player: ServerPlayer, species: String) {
         val data = Cobblemon.playerData.get(player)
         val koCount: KoCount = data.extraData.getOrPut(KoCount.NAME) { KoCount() } as KoCount
@@ -28,7 +39,10 @@ object KoApi {
         if (config.broadcastKosToPlayer) {
             player.sendSystemMessage(
                 Component.translatable(
-                    "counter.ko.confirm", Component.translatable("cobblemon.species.${Util.cleanSpeciesNameForTranslation(species)}.name"), newCount, newStreak
+                    "counter.ko.confirm",
+                    Component.translatable("cobblemon.species.${species}.name"),
+                    newCount,
+                    newStreak
                 )
             )
         }
@@ -39,6 +53,14 @@ object KoApi {
     fun getTotal(player: Player): Int {
         val playerData = Cobblemon.playerData.get(player)
         return (playerData.extraData.getOrPut(KoCount.NAME) { KoCount() } as KoCount).total()
+    }
+
+    fun getCount(player: Player, species: Species): Int {
+        return getCount(player, species.resourceIdentifier)
+    }
+
+    fun getCount(player: Player, species: ResourceLocation): Int {
+        return getCount(player, species.path)
     }
 
     fun getCount(player: Player, species: String): Int {
